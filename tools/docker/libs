@@ -665,6 +665,10 @@ remove_shortcuts ()
 
 create_shortcuts ()
 {
+  if [ "$CREATE_SHORTCUTS" = "0" ]; then
+    return 0
+  fi
+
   log_print "Create local shortcut on Desktop"
   [ -z "$LAB_DESKTOP_SHORTCUT" ] && LAB_DESKTOP_SHORTCUT=1
   [ -z "$HOST" ] && get_host
