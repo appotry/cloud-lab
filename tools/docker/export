@@ -27,6 +27,7 @@ DEFAULT_PORT_MAP=" -p $HOST_VNC_PORT:$CONTAINER_VNC_PORT -p $HOST_SSH_PORT:$CONT
 
 # Available encrypt cmds: sha1sum, sha224sum, cksum, sha256sum, sha512sum, md5sum, sha384sum, sum
 # To enable auto timeout, please pass VNC_TIMEOUT=1
+[ -z "$VNC_RELEASE" ] && VNC_RELEASE=0
 [ -z "$VNC_PUBLIC" ] && VNC_PUBLIC=0
 [ -z "$GATEONE_PUBLIC" ] && GATEONE_PUBLIC=0
 [ -z "$VNC_TIMEOUT" ] && VNC_TIMEOUT=0
@@ -57,8 +58,10 @@ CONTAINER_TOKEN_DIR=//$VNC_TOKENS
 VOLUME_MAP=" -v '/$HOST_RECORD_DIR':'$CONTAINER_RECORD_DIR'"
 debug_print "VNC screen recorded in $HOST_RECORD_DIR"
 
-VOLUME_MAP="$VOLUME_MAP -v '/$HOST_RELEASE_DIR':'$CONTAINER_RELEASE_DIR'"
-debug_print "VNC pages released in $HOST_RELEASE_DIR"
+if [ $VNC_RELEASE -ne 0 ]; then
+  VOLUME_MAP="$VOLUME_MAP -v '/$HOST_RELEASE_DIR':'$CONTAINER_RELEASE_DIR'"
+  debug_print "VNC pages released in $HOST_RELEASE_DIR"
+fi
 
 VOLUME_MAP="$VOLUME_MAP -v '/$HOST_TOKEN_DIR':'$CONTAINER_TOKEN_DIR'"
 debug_print "VNC tokens stored in $HOST_TOKEN_DIR"
